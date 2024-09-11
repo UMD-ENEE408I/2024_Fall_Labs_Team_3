@@ -1,0 +1,398 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>ENEE408ILabTutorial2v2</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-09-11">
+<meta name="DC.source" content="ENEE408ILabTutorial2v2.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#2">3.1</a>
+</li>
+<li>
+<a href="#3">3.2</a>
+</li>
+<li>
+<a href="#4">3.3</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">clear <span class="string">all</span>
+clc
+clf
+</pre>
+<img vspace="5" hspace="5" src="ENEE408ILabTutorial2v2_01.png" alt=""> <h2 id="2">3.1</h2>
+<pre class="codeinput">[y, Fs] = audioread(<span class="string">"Sound_Files_human_voice.wav"</span>);
+<span class="comment">% Question 2: The original sampling frequency is 48000 Hz</span>
+t = linspace(0 , length(y)/Fs, length(y));
+t = t';
+figure(1)
+plot(t,y);
+title(<span class="string">'Human Voice Wave'</span>)
+xlabel(<span class="string">'Seconds'</span>)
+ylabel(<span class="string">'Magnitude'</span>)
+<span class="comment">% win = hann(100, 'periodic');</span>
+<span class="comment">% [S, F, T] = stft(y, Fs, "Window", win);</span>
+<span class="comment">% smag = mag2db(abs(S));</span>
+<span class="comment">% pcolor(seconds(T), F, smag);</span>
+<span class="comment">% shading flat</span>
+<span class="comment">% colorbar</span>
+<span class="comment">% clim(max(smag(:)+[-60 0]));</span>
+
+Fs2 = 8000;
+y2 = zeros(length(y)/6,1);
+t2 = linspace(0 , length(y2)/Fs2, length(y2));
+t2 =t2';
+<span class="keyword">for</span> i = 1:length(y)/6
+    y2(i) = y(i*6);
+<span class="keyword">end</span>
+<span class="comment">% Question 5: 14208 samples were used after downsampling</span>
+figure(2)
+plot(t2,y2)
+title(<span class="string">'Downsampled Human Voice Wave'</span>)
+xlabel(<span class="string">'Seconds'</span>)
+ylabel(<span class="string">'Magnitude'</span>)
+<span class="comment">% Question 7: The downsampled wave has much less granularity when zoomed in</span>
+
+
+<span class="comment">% win = hann(100, 'periodic');</span>
+<span class="comment">% [S, F, T] = stft(y2, Fs2, "Window", win);</span>
+<span class="comment">% smag = mag2db(abs(S));</span>
+<span class="comment">% pcolor(seconds(T), F, smag);</span>
+<span class="comment">% shading flat</span>
+<span class="comment">% colorbar</span>
+<span class="comment">% clim(max(smag(:)+[-60 0]));</span>
+<span class="comment">% ylim([-25000 25000])</span>
+</pre>
+<img vspace="5" hspace="5" src="ENEE408ILabTutorial2v2_02.png" alt=""> <img vspace="5" hspace="5" src="ENEE408ILabTutorial2v2_03.png" alt=""> <h2 id="3">3.2</h2>
+<pre class="codeinput">[y1, Fs1] = audioread(<span class="string">"Sound_Files_M1.wav"</span>);
+[y2, Fs2] = audioread(<span class="string">"Sound_Files_M2.wav"</span>);
+[y3, Fs3] = audioread(<span class="string">"Sound_Files_M3.wav"</span>);
+<span class="comment">% Question 1: Displayed are the RMS values of each audio wave</span>
+rms1 = sqrt(mean(y1.^2));
+rms2 = sqrt(mean(y2.^2));
+rms3 = sqrt(mean(y3.^2));
+fprintf(<span class="string">'The RMS value for M1 is %.2f\n'</span>, rms1);
+fprintf(<span class="string">'The RMS value for M2 is %.2f\n'</span>, rms2);
+fprintf(<span class="string">'The RMS value for M3 is %.2f\n'</span>, rms3);
+<span class="comment">% Question 2: M1 is closer as the RMS value is higher than M2</span>
+size = 24000;
+d = linspace(-24000, 24000, 48001);
+corrspace = zeros(2*size+1,1);
+<span class="keyword">for</span> j = -1*size:size
+delay = j;
+corr = 0;
+<span class="keyword">if</span> (delay&gt;=0)
+<span class="keyword">for</span> i = 1+delay:length(y1)-delay
+    corr = corr + y1(i)*y2(i-delay);
+<span class="keyword">end</span>
+corrspace(j+size+1) = corr;
+<span class="keyword">end</span>
+<span class="keyword">if</span> (delay&lt;0)
+<span class="keyword">for</span> i = 1:length(y1)+delay
+    corr = corr + y1(i)*y2(i-delay);
+<span class="keyword">end</span>
+corrspace(j+size+1) = corr;
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+figure(3)
+plot(d, corrspace);
+title(<span class="string">'Cross Correlation for M1 and M2'</span>)
+xlabel(<span class="string">'Sample Delay'</span>)
+ylabel(<span class="string">'Cross Correlation'</span>)
+
+<span class="comment">% Question 3:The delay is that M2 is 4 sample behind M1 since the peak of</span>
+<span class="comment">% the plot is at -4. 4 samples at a frequency of 8000 Hz is 0.5 ms.</span>
+
+<span class="comment">% Question 4: The angle shown in the diagram can be calculated as</span>
+<span class="comment">% theta = 90 - acos((d1^2+d2^2-4r^2)/(2*d1*d2))/2 -</span>
+<span class="comment">% acos((4r^2+d1^2-d2^2)/(4r*d1)).</span>
+
+<span class="comment">% In this algorithm, d2 is the smaller of the two sides</span>
+d1 = 4;
+d2 = 2;
+r = 1.5;
+theta = 90 - acosd((d1^2+d2^2-4*r^2)/(2*d1*d2))/2 - acosd((4*r^2+d1^2-d2^2)/(4*r*d1));
+fprintf(<span class="string">'The angle θ the robot must turn is %.2f degrees.\n'</span>, theta);
+</pre>
+<pre class="codeoutput">The RMS value for M1 is 0.23
+The RMS value for M2 is 0.18
+The RMS value for M3 is 0.23
+The angle θ the robot must turn is 37.76 degrees.
+</pre>
+<img vspace="5" hspace="5" src="ENEE408ILabTutorial2v2_04.png" alt=""> <h2 id="4">3.3</h2>
+<pre class="codeinput">[y, Fs] = audioread(<span class="string">"Sound_Files_Cafe_with_noise.wav"</span>);
+figure(4)
+plot(y);
+title(<span class="string">'Cafe With Noise Sound Wave'</span>)
+xlabel(<span class="string">'Seconds'</span>)
+ylabel(<span class="string">'Magnitude'</span>)
+win = hann(100, <span class="string">'periodic'</span>);
+[S, F, T] = stft(y, Fs, <span class="string">"Window"</span>, win);
+figure(5)
+smag = mag2db(abs(S));
+pcolor(seconds(T), F, smag);
+shading <span class="string">flat</span>
+colorbar
+clim(max(smag(:)+[-60 0]));
+title(<span class="string">'Cafe With Noise Sound Wave Spectrogram'</span>)
+xlabel(<span class="string">'Seconds'</span>)
+ylabel(<span class="string">'Frequency'</span>)
+player = audioplayer(y, Fs);
+play(player);
+pause(1)
+<span class="keyword">for</span> i = 1:100
+    <span class="keyword">if</span> (abs(F(i))&gt;900)
+        S(i,:)=0;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+figure(6)
+smag = mag2db(abs(S));
+pcolor(seconds(T), F, smag);
+shading <span class="string">flat</span>
+colorbar
+clim(max(smag(:)+[-60 0]));
+y = istft(S, Fs, <span class="string">"Window"</span>, win);
+title(<span class="string">'Spectrogram with Noise Removed'</span>)
+xlabel(<span class="string">'Seconds'</span>)
+ylabel(<span class="string">'Frequency'</span>)
+figure(7)
+plot(y);
+ylim([-0.8 0.8])
+title(<span class="string">'Sound Wave with Noise Removed'</span>)
+xlabel(<span class="string">'Seconds'</span>)
+ylabel(<span class="string">'Magnitude'</span>)
+player = audioplayer(y, Fs);
+play(player);
+</pre>
+<img vspace="5" hspace="5" src="ENEE408ILabTutorial2v2_05.png" alt=""> <img vspace="5" hspace="5" src="ENEE408ILabTutorial2v2_06.png" alt=""> <img vspace="5" hspace="5" src="ENEE408ILabTutorial2v2_07.png" alt=""> <img vspace="5" hspace="5" src="ENEE408ILabTutorial2v2_08.png" alt=""> <p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+clear all
+clc
+clf
+
+%% 3.1
+[y, Fs] = audioread("Sound_Files_human_voice.wav");
+% Question 2: The original sampling frequency is 48000 Hz
+t = linspace(0 , length(y)/Fs, length(y));
+t = t';
+figure(1)
+plot(t,y);
+title('Human Voice Wave')
+xlabel('Seconds')
+ylabel('Magnitude')
+% win = hann(100, 'periodic');
+% [S, F, T] = stft(y, Fs, "Window", win);
+% smag = mag2db(abs(S));
+% pcolor(seconds(T), F, smag);
+% shading flat
+% colorbar
+% clim(max(smag(:)+[-60 0]));
+
+Fs2 = 8000;
+y2 = zeros(length(y)/6,1);
+t2 = linspace(0 , length(y2)/Fs2, length(y2));
+t2 =t2';
+for i = 1:length(y)/6
+    y2(i) = y(i*6);
+end
+% Question 5: 14208 samples were used after downsampling
+figure(2)
+plot(t2,y2)
+title('Downsampled Human Voice Wave')
+xlabel('Seconds')
+ylabel('Magnitude')
+% Question 7: The downsampled wave has much less granularity when zoomed in
+
+
+% win = hann(100, 'periodic');
+% [S, F, T] = stft(y2, Fs2, "Window", win);
+% smag = mag2db(abs(S));
+% pcolor(seconds(T), F, smag);
+% shading flat
+% colorbar
+% clim(max(smag(:)+[-60 0]));
+% ylim([-25000 25000])
+
+%% 3.2
+[y1, Fs1] = audioread("Sound_Files_M1.wav");
+[y2, Fs2] = audioread("Sound_Files_M2.wav");
+[y3, Fs3] = audioread("Sound_Files_M3.wav");
+% Question 1: Displayed are the RMS values of each audio wave
+rms1 = sqrt(mean(y1.^2));
+rms2 = sqrt(mean(y2.^2));
+rms3 = sqrt(mean(y3.^2));
+fprintf('The RMS value for M1 is %.2f\n', rms1);
+fprintf('The RMS value for M2 is %.2f\n', rms2);
+fprintf('The RMS value for M3 is %.2f\n', rms3);
+% Question 2: M1 is closer as the RMS value is higher than M2
+size = 24000;
+d = linspace(-24000, 24000, 48001);
+corrspace = zeros(2*size+1,1);
+for j = -1*size:size
+delay = j;
+corr = 0;
+if (delay>=0)
+for i = 1+delay:length(y1)-delay
+    corr = corr + y1(i)*y2(i-delay);
+end
+corrspace(j+size+1) = corr;
+end
+if (delay<0)
+for i = 1:length(y1)+delay
+    corr = corr + y1(i)*y2(i-delay);
+end
+corrspace(j+size+1) = corr;
+end
+end
+figure(3)
+plot(d, corrspace);
+title('Cross Correlation for M1 and M2')
+xlabel('Sample Delay')
+ylabel('Cross Correlation')
+
+% Question 3:The delay is that M2 is 4 sample behind M1 since the peak of 
+% the plot is at -4. 4 samples at a frequency of 8000 Hz is 0.5 ms.
+
+% Question 4: The angle shown in the diagram can be calculated as
+% theta = 90 - acos((d1^2+d2^2-4r^2)/(2*d1*d2))/2 -
+% acos((4r^2+d1^2-d2^2)/(4r*d1)).
+
+% In this algorithm, d2 is the smaller of the two sides
+d1 = 4;
+d2 = 2;
+r = 1.5;
+theta = 90 - acosd((d1^2+d2^2-4*r^2)/(2*d1*d2))/2 - acosd((4*r^2+d1^2-d2^2)/(4*r*d1));
+fprintf('The angle θ the robot must turn is %.2f degrees.\n', theta);
+
+%% 3.3
+[y, Fs] = audioread("Sound_Files_Cafe_with_noise.wav");
+figure(4)
+plot(y);
+title('Cafe With Noise Sound Wave')
+xlabel('Seconds')
+ylabel('Magnitude')
+win = hann(100, 'periodic');
+[S, F, T] = stft(y, Fs, "Window", win);
+figure(5)
+smag = mag2db(abs(S));
+pcolor(seconds(T), F, smag);
+shading flat
+colorbar
+clim(max(smag(:)+[-60 0]));
+title('Cafe With Noise Sound Wave Spectrogram')
+xlabel('Seconds')
+ylabel('Frequency')
+player = audioplayer(y, Fs);
+play(player);
+pause(1)
+for i = 1:100
+    if (abs(F(i))>900)
+        S(i,:)=0;
+    end
+end
+figure(6)
+smag = mag2db(abs(S));
+pcolor(seconds(T), F, smag);
+shading flat
+colorbar
+clim(max(smag(:)+[-60 0]));
+y = istft(S, Fs, "Window", win);
+title('Spectrogram with Noise Removed')
+xlabel('Seconds')
+ylabel('Frequency')
+figure(7)
+plot(y);
+ylim([-0.8 0.8])
+title('Sound Wave with Noise Removed')
+xlabel('Seconds')
+ylabel('Magnitude')
+player = audioplayer(y, Fs);
+play(player);
+
+
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>
