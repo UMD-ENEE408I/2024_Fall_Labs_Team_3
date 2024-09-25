@@ -51,7 +51,7 @@ Adafruit_MPU6050 mpu;
 
 // PID
 const int base_pid = 80; // Base speed for robot
-const float mid = 6.50;
+const float mid = 5.33;
 
 float e;
 float d_e;
@@ -59,9 +59,9 @@ float total_e;
 float prev_e;
 
 // Assign values to the following feedback constants:
-float Kp = 10;
+float Kp = 5;
 float Kd = 5;
-float Ki = 0;
+float Ki = .001;
 
 /*
  *  Line sensor functions
@@ -216,17 +216,41 @@ void M2_stop() {
   ledcWrite(M2_IN_2_CHANNEL, PWM_MAX);
 }
 
+bool allWhite(){
+  for (int i = 0; i < 13; i++) {
+    if (lineArray[i] != 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool allBlack() {
+  for (int i = 0; i < 13; i++) {
+    if (lineArray[i] != 1) {
+      return false;
+    }
+  }
+  return true;
+}
+
 int isCorner() {
   digitalConvert();
-  if (lineArray[8] == 0 && lineArray[9] == 0 && lineArray[10] == 0 && lineArray[11] == 0 && lineArray[12] == 0) {
+  if (allWhite()){
+    Serial.print(", all white, ");
+    return 3;
+  } else if(allBlack()) {
+    Serial.print(", all black, ");
+    return 4;
+  } else if (lineArray[8] == 1 && lineArray[9] == 1 && lineArray[10] == 1 && lineArray[11] == 1 && lineArray[12] == 1) {
     Serial.print(", left corner, ");
     return 1; //left corner
-  } else if (lineArray[4] == 0 && lineArray[3] == 0 && lineArray[2] == 0 && lineArray[1] == 0 && lineArray[0] == 0) {
+  } else if (lineArray[4] == 1 && lineArray[3] == 1 && lineArray[2] == 1 && lineArray[1] == 1 && lineArray[0] == 1) {
     Serial.print(", right corner, ");
     return 2; //right
   } else {
     Serial.print(", no corner, ");
-    return 0;
+    return 0; 
   }
 }
 
@@ -368,16 +392,16 @@ void loop() {
     d_e = (e - prev_e); 
     total_e= total_e + e;
     prev_e = e;
-    // Serial.print(", e:");
-    // Serial.print(e);
-    // Serial.print(", prev_e:");
-    // Serial.print(prev_e);
-    // Serial.print(", d_e:");
-    // Serial.print(d_e);
-    // Serial.print(", total_e:");
-    // Serial.print(total_e);
-    // Serial.print(", u:");
-    // Serial.print(u);
+    Serial.print(", e:");
+    Serial.print(e);
+    Serial.print(", prev_e:");
+    Serial.print(prev_e);
+    Serial.print(", d_e:");
+    Serial.print(d_e);
+    Serial.print(", total_e:");
+    Serial.print(total_e);
+    Serial.print(", u:");
+    Serial.print(u);
     // Implement PID control (include safeguards for when the PWM values go below 0 or exceed maximum)
     u = Kp*e + Ki*total_e + Kd*d_e;
     int basePWM = 80;
@@ -398,21 +422,32 @@ void loop() {
       M2_forward(150);
       delay(500);
       rotateNDegrees1(60);
-      delay(5000);
+      delay(1000);
     } else if (side == 2) {
       M1_forward(150);
       M2_forward(150);
       delay(500);
       rotateNDegrees2(60);
-      delay(5000);
-    }
-    if (basePWM -u < 0|| basePWM + u > 255 || pos == 13) {
-      rightWheelPWM = 0;
-      leftWheelPWM = 0;
+      delay(1000);
+    } else if (side == 3) {
+      //all white
+      M1_forward(150);
+      M2_forward(150);
+
+    } else if(side == 4) {
+      //all black 
+      rotateNDegrees2(150);
+      delay(1000);
     } else {
-      rightWheelPWM = basePWM - u; //positive error
-      leftWheelPWM = basePWM + u;
+      if (basePWM -u < 0|| basePWM + u > 255 || pos == 13) {
+        rightWheelPWM = 0;
+        leftWheelPWM = 0;
+      } else {
+        rightWheelPWM = basePWM + u; //positive error
+        leftWheelPWM = basePWM - u;
+      }
     }
+    
     M1_forward(leftWheelPWM);
     M2_forward(rightWheelPWM);
   }
